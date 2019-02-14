@@ -1,3 +1,6 @@
+*{
+    font-family: sans-serif;
+}
 header{
     text-align: center;
 }
@@ -5,7 +8,9 @@ header{
 h1 {
     font-size: 4vw;
     text-align: center;
-    
+    font-family: 'Yellowtail', cursive;
+    letter-spacing: 0.2vw;
+    margin-bottom: 5px;
 }
 
 select {
@@ -42,6 +47,7 @@ h2 {
     text-transform: uppercase;
     text-align: center;
     font-size: 3vw;
+    font-weight: bold;
 }
 
 p {
