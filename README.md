@@ -1,9 +1,9 @@
 # 301d44-lab-03
 ### #1: Display images
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 1.5 Hours
 
-Start time: _____
+Start time: 9:40a.m.
 
 Finish time: _____
 
