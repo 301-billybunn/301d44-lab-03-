@@ -24,6 +24,16 @@ Animal.prototype.render = function() {
   animalClone.attr('class', this.keyword);
 }
 
+Animal.prototype.renderSelChange = function() {
+  console.log('ranrenderSelChange');
+  $('select').append('<option class="clone"></option>');
+  let optClone = $('option[class="clone"]');
+
+  optClone.attr('value', this.keyword);
+  optClone.text(this.keyword);
+  optClone.removeClass('clone');
+}
+
 Animal.readJson = () => {
   $.get('../data/page-1.json', 'json')
     .then(data => {
@@ -36,6 +46,7 @@ Animal.readJson = () => {
 
 Animal.loadAnimals = () => {
   Animal.allAnimals.forEach(animal => animal.render())
+  Animal.allAnimals.forEach(animal => animal.renderSelChange())
 }
 
 $(() => Animal.readJson());
