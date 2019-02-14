@@ -31,14 +31,14 @@ Actual time needed to complete: 1 hour
 ---
 ### #3: Style the application
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: .75 hours
 
-Start time: _____
+Start time: 12:40pm
 
 Finish time: _____
 
 Actual time needed to complete: _____
 
-**Navigator:** 
+**Navigator:** Billy Bunn
 
-**Driver:**
+**Driver:** Ian Gifford
