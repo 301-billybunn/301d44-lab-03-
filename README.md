@@ -3,18 +3,18 @@
 
 Estimate of time needed to complete: 1.5 Hours
 
-Start time: 9:40a.m.
+Start time: 9:40am
 
-Finish time: 11:15a.m.
+Finish time: 11:15am
 
 Actual time needed to complete: 1.25 Hours
 
 ---
 ### #2: Filter images
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 1.25 hours
 
-Start time: _____
+Start time: 11:30am
 
 Finish time: _____
 
