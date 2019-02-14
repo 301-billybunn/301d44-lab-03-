@@ -49,5 +49,10 @@ Animal.loadAnimals = () => {
   Animal.allAnimals.forEach(animal => animal.renderSelChange())
 }
 
-$(() => Animal.readJson());
+$('select[name="animals"]').on('change', function() {
+  let $selection = $(this).val();
+  $('div').hide()
+  $(`div[class="${$selection}"]`).show()
+})
 
+$(() => Animal.readJson());
