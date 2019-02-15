@@ -10,7 +10,7 @@ function Animal(animal) {
 
 Animal.allAnimals = [];
 
-Animal.prototype.render = function() {
+Animal.prototype.render = function () {
   $('main').append('<div class="clone"></div>');
   let animalClone = $('div[class="clone"]');
 
@@ -24,7 +24,7 @@ Animal.prototype.render = function() {
   animalClone.attr('class', this.keyword);
 }
 
-Animal.prototype.renderSelChange = function() {
+Animal.prototype.renderSelChange = function () {
   console.log('ranrenderSelChange');
   $('select').append('<option class="clone"></option>');
   let optClone = $('option[class="clone"]');
@@ -34,18 +34,14 @@ Animal.prototype.renderSelChange = function() {
   optClone.removeClass('clone');
 }
 
-Animal.readJson = () => {
-  let currentPage = document.URL
-  let jsonData;
-  if (currentPage.includes('index.html')) {
-    jsonData = 'data/page-1.json'
-  }
-  if (currentPage.includes('page-2.html')) {
-    jsonData = 'data/page-2.json'
-  }
-  $.get(jsonData)
+const jsonDataOne = 'data/page-1.json'
+const jsonDataTwo = 'data/page-2.json';
+let currentJsonData = jsonDataOne;
+
+Animal.readJson = (jsonPage) => {
+  $.get(jsonPage)
     .then(data => {
-      data.forEach(obj =>{
+      data.forEach(obj => {
         Animal.allAnimals.push(new Animal(obj));
       })
     })
@@ -53,14 +49,30 @@ Animal.readJson = () => {
 };
 
 Animal.loadAnimals = () => {
+  console.log('loaded animals');
   Animal.allAnimals.forEach(animal => animal.render())
   Animal.allAnimals.forEach(animal => animal.renderSelChange())
 }
 
-$('select[name="animals"]').on('change', function() {
+// Animal.switchGallery = () => {
+//   console.log('fired switchGallery()');
+//   console.log('currentJsonData:', currentJsonData);
+
+// }
+
+$('select[name="animals"]').on('change', function () {
   let $selection = $(this).val();
   $('div').hide()
   $(`div[class="${$selection}"]`).show()
 })
 
-$(() => Animal.readJson());
+// SWITCH WHICH GALLERY IS DISPLAYS ON PAGE
+$('#switch-button').on('click', function () {
+  // 1. Hide gallery 1
+  $('#gallery-one').fadeOut();
+  // 2. Show gallery 2
+  $('#gallery-two').fadeIn();
+
+})
+
+$(() => Animal.readJson(jsonDataOne));
