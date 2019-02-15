@@ -67,11 +67,12 @@ $('select[name="animals"]').on('change', function () {
 })
 
 // SWITCH WHICH GALLERY IS DISPLAYS ON PAGE
-$('#switch-button').on('click', function () {
-  // 1. Hide gallery 1
-  $('#gallery-one').fadeOut();
-  // 2. Show gallery 2
-  $('#gallery-two').fadeIn();
+$('.switch-button').on('click', function () {
+  console.log('heard click');
+  Animal.allAnimals = []; // empties the allAnimals array
+  $('div').remove(); // deletes all divs from the page
+  // Clear the page
+  Animal.readJson(jsonDataTwo); // calls the readJson again, on the other page
 
 })
 
