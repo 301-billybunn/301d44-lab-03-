@@ -52,9 +52,9 @@ Actual time needed to complete: .75 hours
 
 ### #1: Pagination
 
-Estimate of time needed to complete: ___
+Estimate of time needed to complete: 1 hour
 
-Start time: ___
+Start time: 9:15am
 
 Finish time: ___
 

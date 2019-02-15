@@ -35,7 +35,15 @@ Animal.prototype.renderSelChange = function() {
 }
 
 Animal.readJson = () => {
-  $.get('data/page-1.json')
+  let currentPage = document.URL
+  let jsonData;
+  if (currentPage.includes('index.html')) {
+    jsonData = 'data/page-1.json'
+  }
+  if (currentPage.includes('page-2.html')) {
+    jsonData = 'data/page-2.json'
+  }
+  $.get(jsonData)
     .then(data => {
       data.forEach(obj =>{
         Animal.allAnimals.push(new Animal(obj));
