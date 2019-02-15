@@ -1,4 +1,7 @@
 # 301d44-lab-03
+
+## Lab 03
+
 ### #1: Display images
 
 Estimate of time needed to complete: 1.5 hours
@@ -38,6 +41,69 @@ Start time: 12:40pm
 Finish time: 1:20pm
 
 Actual time needed to complete: .75 hours
+
+**Navigator:** Billy Bunn
+
+**Driver:** Ian Gifford
+
+---
+
+## Lab 04
+
+### #1: Pagination
+
+Estimate of time needed to complete: ___
+
+Start time: ___
+
+Finish time: ___
+
+Actual time needed to complete: ___
+
+**Navigator:** Ian Gifford
+
+**Driver:** Billy Bunn
+
+---
+### #2: Templating
+
+Estimate of time needed to complete: ___
+
+Start time: ___
+
+Finish time: ___
+
+Actual time needed to complete: ___
+
+**Navigator:** Billy Bunn
+
+**Driver:** Ian Gifford
+
+---
+### #3: Styling with Flexbox
+
+Estimate of time needed to complete: ___
+
+Start time: ___
+
+Finish time: ___
+
+Actual time needed to complete: ___
+
+**Navigator:** Ian Gifford
+
+**Driver:** Billy Bunn
+
+---
+### #4: Sort the images
+
+Estimate of time needed to complete: ___
+
+Start time: ___
+
+Finish time: ___
+
+Actual time needed to complete: ___
 
 **Navigator:** Billy Bunn
 
