@@ -56,9 +56,9 @@ Estimate of time needed to complete: 1 hour
 
 Start time: 9:15am
 
-Finish time: ___
+Finish time: 12:00pm
 
-Actual time needed to complete: ___
+Actual time needed to complete: 2.75 hours
 
 **Navigator:** Ian Gifford
 
