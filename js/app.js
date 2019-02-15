@@ -36,7 +36,6 @@ Animal.prototype.renderSelChange = function () {
 
 const jsonDataOne = 'data/page-1.json'
 const jsonDataTwo = 'data/page-2.json';
-let currentJsonData = jsonDataOne;
 
 Animal.readJson = (jsonPage) => {
   $.get(jsonPage)
@@ -54,11 +53,6 @@ Animal.loadAnimals = () => {
   Animal.allAnimals.forEach(animal => animal.renderSelChange())
 }
 
-// Animal.switchGallery = () => {
-//   console.log('fired switchGallery()');
-//   console.log('currentJsonData:', currentJsonData);
-
-// }
 
 $('select[name="animals"]').on('change', function () {
   let $selection = $(this).val();
@@ -66,14 +60,19 @@ $('select[name="animals"]').on('change', function () {
   $(`div[class="${$selection}"]`).show()
 })
 
-// SWITCH WHICH GALLERY IS DISPLAYS ON PAGE
-$('.switch-button').on('click', function () {
+function switchEventHandler() {
   console.log('heard click');
+  let buttonId = event.target.id;
   Animal.allAnimals = []; // empties the allAnimals array
   $('div').remove(); // deletes all divs from the page
-  // Clear the page
-  Animal.readJson(jsonDataTwo); // calls the readJson again, on the other page
+  $('option').remove(); // removes all option elements from the page
+  $('select').append('<option value="default">Filter by Keyword</option>'); // adds default option
+  if (buttonId === 'gallery-one') Animal.readJson(jsonDataOne)
+  if (buttonId === 'gallery-two') Animal.readJson(jsonDataTwo)
+}
 
-})
+
+// SWITCH WHICH GALLERY IS DISPLAYS ON PAGE
+$('.switch-button').on('click', switchEventHandler)
 
 $(() => Animal.readJson(jsonDataOne));
