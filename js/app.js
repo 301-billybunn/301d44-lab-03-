@@ -10,7 +10,7 @@ function Animal(animal) {
 
 Animal.allAnimals = [];
 
-Animal.prototype.render = function() {
+Animal.prototype.render = function () {
   $('main').append('<div class="clone"></div>');
   let animalClone = $('div[class="clone"]');
 
@@ -24,7 +24,7 @@ Animal.prototype.render = function() {
   animalClone.attr('class', this.keyword);
 }
 
-Animal.prototype.renderSelChange = function() {
+Animal.prototype.renderSelChange = function () {
   console.log('ranrenderSelChange');
   $('select').append('<option class="clone"></option>');
   let optClone = $('option[class="clone"]');
@@ -34,10 +34,13 @@ Animal.prototype.renderSelChange = function() {
   optClone.removeClass('clone');
 }
 
-Animal.readJson = () => {
-  $.get('data/page-1.json')
+const jsonDataOne = 'data/page-1.json'
+const jsonDataTwo = 'data/page-2.json';
+
+Animal.readJson = (jsonPage) => {
+  $.get(jsonPage)
     .then(data => {
-      data.forEach(obj =>{
+      data.forEach(obj => {
         Animal.allAnimals.push(new Animal(obj));
       })
     })
@@ -45,14 +48,31 @@ Animal.readJson = () => {
 };
 
 Animal.loadAnimals = () => {
+  console.log('loaded animals');
   Animal.allAnimals.forEach(animal => animal.render())
   Animal.allAnimals.forEach(animal => animal.renderSelChange())
 }
 
-$('select[name="animals"]').on('change', function() {
+
+$('select[name="animals"]').on('change', function () {
   let $selection = $(this).val();
   $('div').hide()
   $(`div[class="${$selection}"]`).show()
 })
 
-$(() => Animal.readJson());
+function switchEventHandler() {
+  console.log('heard click');
+  let buttonId = event.target.id;
+  Animal.allAnimals = []; // empties the allAnimals array
+  $('div').remove(); // deletes all divs from the page
+  $('option').remove(); // removes all option elements from the page
+  $('select').append('<option value="default">Filter by Keyword</option>'); // adds default option
+  if (buttonId === 'gallery-one') Animal.readJson(jsonDataOne)
+  if (buttonId === 'gallery-two') Animal.readJson(jsonDataTwo)
+}
+
+
+// SWITCH WHICH GALLERY IS DISPLAYS ON PAGE
+$('.switch-button').on('click', switchEventHandler)
+
+$(() => Animal.readJson(jsonDataOne));
