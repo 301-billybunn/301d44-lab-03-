@@ -1,19 +1,29 @@
 'use strict';
 
-function Animal(animal) {
+// Helper function to filter for unique values
+const filterForUnique = (arr) => arr.filter((value, index, arr) => arr.indexOf(value) === index);
+
+
+Animal.allAnimals = []; // Array to hold animal objects
+Animal.keywords = []; // Array to hold animal keywords
+
+// Constructor for each animal obj
+function Animal(animal, gallery) {
   this.keyword = animal.keyword;
   this.horns = animal.horns;
   this.title = animal.title;
   this.description = animal.description;
   this.image_url = animal.image_url;
+  this.gallery = gallery;
+  Animal.allAnimals.push(this); // each animal obj gets pushed to the allAnimals array
+  Animal.keywords.push({ keyword: this.keyword, page: this.gallery }); // each keyword gets pushed to the keywords
+  Animal.keywords = filterForUnique(Animal.keywords); // filters keywords for unique values only
 }
 
-Animal.allAnimals = [];
-
+// Prototype function to create DOM variables for each animal
 Animal.prototype.render = function () {
   $('main').append('<div class="clone"></div>');
   let animalClone = $('div[class="clone"]');
-
   let animalHtml = $('#photo-template').html();
 
   animalClone.html(animalHtml);
@@ -21,58 +31,96 @@ Animal.prototype.render = function () {
   animalClone.find('img').attr('src', this.image_url);
   animalClone.find('p').text(this.description);
   animalClone.removeClass('clone');
-  animalClone.attr('class', this.keyword);
+  animalClone.addClass(this.keyword);
+  animalClone.addClass(this.gallery);
 }
 
-Animal.prototype.renderSelChange = function () {
-  console.log('ranrenderSelChange');
-  $('select').append('<option class="clone"></option>');
-  let optClone = $('option[class="clone"]');
-
-  optClone.attr('value', this.keyword);
-  optClone.text(this.keyword);
-  optClone.removeClass('clone');
-}
-
-const jsonDataOne = 'data/page-1.json'
-const jsonDataTwo = 'data/page-2.json';
-
+// Takes JSON data, runs each JSON obj through a constructor, and invokes loadAnimals()
 Animal.readJson = (jsonPage) => {
+  const pageName = /page-\d+/.exec(jsonPage)[0]
   $.get(jsonPage)
-    .then(data => {
-      data.forEach(obj => {
-        Animal.allAnimals.push(new Animal(obj));
-      })
-    })
+    .then(data => data.forEach(obj => new Animal(obj, pageName)))
     .then(Animal.loadAnimals)
 };
 
-Animal.loadAnimals = () => {
-  console.log('loaded animals');
-  Animal.allAnimals.forEach(animal => animal.render())
-  Animal.allAnimals.forEach(animal => animal.renderSelChange())
+// Renders animal images and select options IF not already on the page
+Animal.loadAnimals = function () {
+  console.log('fired loadAnimals()');
+
+  if (Animal.allAnimals.length > $('div').length) Animal.allAnimals.forEach(animal => animal.render());
+  if (Animal.keywords.length > $('option').length) Animal.renderSelectOptions(Animal.keywords);
 }
 
+// Renders all options for drop-down select box
+Animal.renderSelectOptions = function (arr) {
+  for (let i = 0; i < Animal.keywords.length; i++) {
+    $('select').append('<option class="clone"></option>');
+    let optClone = $('option[class="clone"]');
+    optClone.attr('value', arr[i].keyword);
+    optClone.text(arr[i].keyword);
+    optClone.addClass(arr[i].page);
+    optClone.addClass(arr[i].keyword);
+    optClone.removeClass('clone');
+  }
+}
 
+// jQuery events
+
+// Filters animals displayed with select box change
 $('select[name="animals"]').on('change', function () {
   let $selection = $(this).val();
-  $('div').hide()
-  $(`div[class="${$selection}"]`).show()
+  if ($selection === 'default') { // Show everything if default option is selected again
+    $('div').show()
+  } else { // Hide all animals and show only animals with the selected keyword
+    $('div').hide()
+    $(`div.${$selection}`).show()
+  }
 })
 
-function switchEventHandler() {
-  console.log('heard click');
-  let buttonId = event.target.id;
-  Animal.allAnimals = []; // empties the allAnimals array
-  $('div').remove(); // deletes all divs from the page
-  $('option').remove(); // removes all option elements from the page
-  $('select').append('<option value="default">Filter by Keyword</option>'); // adds default option
-  if (buttonId === 'gallery-one') Animal.readJson(jsonDataOne)
-  if (buttonId === 'gallery-two') Animal.readJson(jsonDataTwo)
-}
-
-
 // SWITCH WHICH GALLERY IS DISPLAYS ON PAGE
-$('.switch-button').on('click', switchEventHandler)
+$('.switch-button').on('click', function () {
+  console.log('fired switchEventHandler()');
+  let buttonId = event.target.id;
+  $('button').removeClass('selected-button');
+  $(`button#${buttonId}`).addClass('selected-button');
+  if (buttonId === 'all-pages') {
+    $('div').removeClass('hidden-by-page');
+  } else {
+    $('div').addClass('hidden-by-page');
+    $('option').hide();
+    $(`div.${buttonId}`).removeClass('hidden-by-page');
+    $(`option.${buttonId}`).show();
+  }
+  // if (buttonId === 'gallery-one') {
+  //   $('div[class=data/page-2.json').hide();
+  //   $('div[class=data/page-1.json').show();
+  // }
+  // if (buttonId === 'gallery-two') {
+  //   $('div[class="data/page-1.json"]').hide();
+  //   $('div[class="data/page-2.json"]').show();
+  // }
+})
 
-$(() => Animal.readJson(jsonDataOne));
+// function switchEventHandler() {
+//   console.log('heard click');
+//   let buttonId = event.target.id;
+//   Animal.allAnimals = []; // empties the allAnimals array
+//   $('div').remove(); // deletes all divs from the page
+//   $('option').remove(); // removes all option elements from the page
+//   $('select').append('<option value="default">Filter by Keyword</option>'); // adds default option
+//   if (buttonId === 'gallery-one') Animal.readJson(jsonDataOne)
+//   if (buttonId === 'gallery-two') Animal.readJson(jsonDataTwo)
+// }
+
+
+
+
+
+const jsonDataOne = 'data/page-1.json'
+const jsonDataTwo = 'data/page-2.json';
+Animal.readJson(jsonDataOne);
+Animal.readJson(jsonDataTwo);
+
+// Animal.keywords.filter((keyword, index, arr) => arr.indexOf(keyword) === index);
+
+
