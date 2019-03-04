@@ -16,7 +16,7 @@ function Animal(animal, gallery) {
   this.image_url = animal.image_url;
   this.gallery = gallery;
   Animal.allAnimals.push(this); // each animal obj gets pushed to the allAnimals array
-  Animal.keywords.push(this.keyword); // each keyword gets pushed to the keywords
+  Animal.keywords.push({ keyword: this.keyword, page: this.gallery }); // each keyword gets pushed to the keywords
   Animal.keywords = filterForUnique(Animal.keywords); // filters keywords for unique values only
 }
 
@@ -24,7 +24,6 @@ function Animal(animal, gallery) {
 Animal.prototype.render = function () {
   $('main').append('<div class="clone"></div>');
   let animalClone = $('div[class="clone"]');
-
   let animalHtml = $('#photo-template').html();
 
   animalClone.html(animalHtml);
@@ -38,14 +37,16 @@ Animal.prototype.render = function () {
 
 // Takes JSON data, runs each JSON obj through a constructor, and invokes loadAnimals()
 Animal.readJson = (jsonPage) => {
+  const pageName = /page-\d+/.exec(jsonPage)[0]
   $.get(jsonPage)
-    .then(data => data.forEach(obj => new Animal(obj, jsonPage)))
+    .then(data => data.forEach(obj => new Animal(obj, pageName)))
     .then(Animal.loadAnimals)
 };
 
 // Renders animal images and select options IF not already on the page
-Animal.loadAnimals = () => {
+Animal.loadAnimals = function () {
   console.log('fired loadAnimals()');
+
   if (Animal.allAnimals.length > $('div').length) Animal.allAnimals.forEach(animal => animal.render());
   if (Animal.keywords.length > $('option').length) Animal.renderSelectOptions(Animal.keywords);
 }
@@ -55,8 +56,10 @@ Animal.renderSelectOptions = function (arr) {
   for (let i = 0; i < Animal.keywords.length; i++) {
     $('select').append('<option class="clone"></option>');
     let optClone = $('option[class="clone"]');
-    optClone.attr('value', arr[i]);
-    optClone.text(arr[i]);
+    optClone.attr('value', arr[i].keyword);
+    optClone.text(arr[i].keyword);
+    optClone.addClass(arr[i].page);
+    optClone.addClass(arr[i].keyword);
     optClone.removeClass('clone');
   }
 }
@@ -78,8 +81,16 @@ $('select[name="animals"]').on('change', function () {
 $('.switch-button').on('click', function () {
   console.log('fired switchEventHandler()');
   let buttonId = event.target.id;
-  console.log(buttonId);
-
+  $('button').removeClass('selected-button');
+  $(`button#${buttonId}`).addClass('selected-button');
+  if (buttonId === 'all-pages') {
+    $('div').removeClass('hidden-by-page');
+  } else {
+    $('div').addClass('hidden-by-page');
+    $('option').hide();
+    $(`div.${buttonId}`).removeClass('hidden-by-page');
+    $(`option.${buttonId}`).show();
+  }
   // if (buttonId === 'gallery-one') {
   //   $('div[class=data/page-2.json').hide();
   //   $('div[class=data/page-1.json').show();
@@ -109,8 +120,6 @@ const jsonDataOne = 'data/page-1.json'
 const jsonDataTwo = 'data/page-2.json';
 Animal.readJson(jsonDataOne);
 Animal.readJson(jsonDataTwo);
-
-// $(() => Animal.readJson(jsonDataTwo));
 
 // Animal.keywords.filter((keyword, index, arr) => arr.indexOf(keyword) === index);
 

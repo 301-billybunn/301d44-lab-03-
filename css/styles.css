@@ -1,5 +1,14 @@
-.hidden {
+.selected-button {
+    border: 3px solid yellow;
+    color: red;
+}
+
+.hidden-option {
     display: none;
+}
+
+.hidden-by-page {
+    display: none !important; /* in order to overwrite jQuery .show() and .hide() */
 }
 
 *{
